@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Transactions;
 
@@ -133,8 +134,8 @@ namespace recordsure.interview {
             
             string reversedString = "";
             
-            for(int i = 0; i < word.Length; i++)
-                reversedString.Prepend(word[i]);
+            for(int i = word.Length -1 ; i >= 0; i--)
+                reversedString += word[i];
 
             return word.SequenceEqual(reversedString);
         }

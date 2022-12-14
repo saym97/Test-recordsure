@@ -82,10 +82,10 @@ namespace recordsure.interview.test
         [Test]
         public void IsPalindrome() {
             var palindromes = new List<string> {
-
+                "tenet","anna","level","radar","madam"
             };
             var invalid = new List<string> {
-
+                "judge","bulb","road"
             };
 
             foreach (var word in palindromes) {
