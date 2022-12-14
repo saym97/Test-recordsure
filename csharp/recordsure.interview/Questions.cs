@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Transactions;
 
 namespace recordsure.interview {
     public class Questions {
@@ -22,7 +24,13 @@ namespace recordsure.interview {
         /// <param name="source">An enumerable containing words</param>
         /// <returns></returns>
         public IEnumerable<int> ExtractNumbers(IEnumerable<string> source) {
-            throw new NotImplementedException();
+            List<int> numbers = new List<int>();
+            foreach (string item in source)
+            {
+                if (int.TryParse(item, out var result))
+                    numbers.Add(result);
+            }
+            return numbers;
         }
 
         /// <summary>
@@ -67,7 +75,8 @@ namespace recordsure.interview {
         /// <param name="second">Second list of words</param>
         /// <returns></returns>
         public string LongestCommonWord(IEnumerable<string> first, IEnumerable<string> second) {
-            throw new NotImplementedException();
+            IEnumerable<string> commonWords = first.Intersect(second);
+            return commonWords.OrderByDescending(x => x.Length).FirstOrDefault();
         }
 
         /// <summary>
@@ -83,7 +92,7 @@ namespace recordsure.interview {
         /// <param name="km">distance in kilometers</param>
         /// <returns></returns>
         public double DistanceInMiles(double km) {
-            throw new NotImplementedException();
+            return (km / 1.6);
         }
 
         /// <summary>
@@ -99,7 +108,7 @@ namespace recordsure.interview {
         /// <param name="miles">distance in miles</param>
         /// <returns></returns>
         public double DistanceInKm(double miles) {
-            throw new NotImplementedException();
+            return (miles * 1.6);
         }
 
         /// <summary>
@@ -121,7 +130,13 @@ namespace recordsure.interview {
         /// <param name="word">The word to check</param>
         /// <returns></returns>
         public bool IsPalindrome(string word) {
-            throw new NotImplementedException();
+            
+            string reversedString = "";
+            
+            for(int i = 0; i < word.Length; i++)
+                reversedString.Prepend(word[i]);
+
+            return word.SequenceEqual(reversedString);
         }
 
         /// <summary>
@@ -142,7 +157,16 @@ namespace recordsure.interview {
         /// <param name="source"></param>
         /// <returns></returns>
         public IEnumerable<object> Shuffle(IEnumerable<object> source) {
-            throw new NotImplementedException();
+            var tempList = source.ToList();
+            Random rand = new Random();
+           for (int i = 1; i < tempList.Count(); ++i)
+            {
+                int j = rand.Next(i - 1);
+                object temp = tempList[j];
+                tempList[j] = tempList[i];
+                tempList[i] = temp;
+            }
+           return tempList;
         }
 
         /// <summary>
@@ -154,7 +178,20 @@ namespace recordsure.interview {
         /// <param name="source"></param>
         /// <returns></returns>
         public int[] Sort(int[] source) {
-            throw new NotImplementedException();
+            //Using Selection sort
+            for(int i = 0; i < source.Length -1 ; i++)
+            {
+                for(int j=i+1; j< source.Length; j++)
+                {
+                    if(source[j] < source[i])
+                    {
+                        int temp = source[j];
+                        source[j] = source[i];
+                        source[i] = temp;
+                    }
+                }
+            }
+            return source;
         }
 
         /// <summary>
@@ -168,7 +205,22 @@ namespace recordsure.interview {
         /// </summary>
         /// <returns></returns>
         public int FibonacciSum() {
-            throw new NotImplementedException();
+            const int limit = 4000000;
+            int sum = 0;
+            int prev = 1;
+            int current= 2;
+
+            while (sum < limit)
+            {
+                if(current % 2 == 0)
+                {
+                    sum += current;
+                }
+                int next = prev + current; 
+                prev = current;
+                current = next;
+            }
+            return sum;
         }
 
         /// <summary>
@@ -179,7 +231,7 @@ namespace recordsure.interview {
         /// <returns></returns>
         public IEnumerable<int> GenerateList() {
             var ret = new List<int>();
-            var numThreads = 2;
+            var numThreads = 1; 
 
             Thread[] threads = new Thread[numThreads];
             for (var i = 0; i < numThreads; i++) {
